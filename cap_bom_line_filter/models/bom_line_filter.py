@@ -25,7 +25,7 @@ class BOMLineFilter(models.Model):
     def _compute_attribute(self):
         for record in self:
             record['attributes'] = '\\\\\\'.join(list(
-                record.bom_line.mapped('bom_product_template_attribute_value_ids').mapped('display_name')))
+                record.apply_on_variants.mapped('display_name')))
 
 
 
