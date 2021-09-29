@@ -21,7 +21,7 @@ class BOMLineFilter(models.Model):
 
         bl['search_filter'] = filter
 
-    @api.depends('bom_line')
+    @api.depends('bom_product_template_attribute_value_ids')
     def _compute_attribute(self):
         for record in self:
             record['attributes'] = '\\\\\\'.join(list(
