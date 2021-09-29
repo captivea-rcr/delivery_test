@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="bom_line_filter_form_view" model="ir.ui.view">
+        <field name="name">bom.line.filter.view</field>
+        <field name="model">bom.line.filter</field>
+        <field name="arch" type="xml">
+            <form>
+                <header/>
+                <sheet string="Bom Line Filter">
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" invisible="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group name="studio_group_c12c50">
+                        <group name="studio_group_c12c50_left">
+                            <field name="bom_line" string="BOM Line" attrs="{}" invisible="1"/>
+                            <field name="possible_bom_product_template_attribute_value_ids" invisible="1"/>
+                            <field name="apply_on_variants" string="Apply on Variants" widget="many2many_tags"/>
+                        </group>
+                        <group name="studio_group_c12c50_right">
+                            <field name="attributes" string="Attributes" attrs="{}"/>
+                        </group>
+                    </group>
+                    <xml class="oe_edit_only">
+                        <title>Your HTML title</title>
+                        <script language="javascript">
+                            var conditions = document.getElementsByName("condition");
+                            conditions[0].style.display = "none";
+                            var attr_string = document.getElementsByName("attributes");
+<!--                            attr_string[0].parentElement.parentElement.style.display = "none";-->
+                        </script>
+                        <xml>
+                            <title>Your HTML title</title>
+                            <htmlData>&lt;html &gt;
+                                &lt;HTML class="oe_edit_only"&gt;
+                                &lt;style&gt;
+                                .r{
+                                all: revert;
+                                }
+                                &lt;/style&gt;
+                                &lt;HEAD&gt;
+                                &lt;TITLE&gt; Add/Remove dynamic rows in HTML table &lt;/TITLE&gt;
+                                &lt;SCRIPT language="javascript"&gt;
+                                function deleteConditions(tableID) {
+                                try {
+                                var table = document.getElementById(tableID);
+                                var rowCount = table.rows.length;
+                                var conditions = document.getElementsByName("condition");
+                                var conditionCount = conditions.length;
+                                for (var i = 0; i &lt; conditionCount; i++) {
+                                if (i &gt;= rowCount - 1) {
+                                conditions[i].style.display = "none";
+                                } else {
+                                conditions[i].style.display = "block";
+                                }
+                                }
+                                } catch (e) {
+                                alert(e);
+                                }
+                                }
+
+                                function addRow(tableID) {
+
+                                var table = document.getElementById(tableID);
+
+                                var rowCount = table.rows.length;
+                                var row = table.insertRow(rowCount);
+
+                                var colCount = table.rows[0].cells.length;
+
+                                for (var i = 0; i &lt; colCount; i++) {
+
+                                var newcell = row.insertCell(i);
+
+                                newcell.innerHTML = table.rows[0].cells[i].innerHTML;
+                                //alert(newcell.childNodes);
+                                switch (newcell.childNodes[0].type) {
+                                case "text":
+                                newcell.childNodes[0].value = "";
+                                break;
+                                case "checkbox":
+                                newcell.childNodes[0].checked = false;
+                                break;
+                                case "select-one":
+                                newcell.childNodes[0].selectedIndex = 0;
+                                break;
+                                }
+                                }
+                                var f = document.getElementsByName("front")[rowCount];
+                                var b = document.getElementsByName("back")[rowCount];
+                                f.innerHTML = "";
+                                b.innerHTML = "";
+                                deleteConditions(tableID);
+                                updateSummary();
+                                }
+
+                                function deleteRow(tableID) {
+                                try {
+                                var table = document.getElementById(tableID);
+                                var rowCount = table.rows.length;
+
+                                for (var i = 0; i &lt; rowCount; i++) {
+                                var row = table.rows[i];
+                                var chkbox = row.cells[0].childNodes[0];
+                                if (null != chkbox &amp;&amp; true == chkbox.checked) {
+                                if (rowCount &lt;= 1) {
+                                alert("Cannot delete all the rows.");
+                                break;
+                                }
+                                table.deleteRow(i);
+                                rowCount--;
+                                i--;
+                                }
+
+
+                                }
+                                } catch (e) {
+                                alert(e);
+                                }
+                                deleteConditions(tableID);
+                                updateSummary();
+                                }
+
+                                function addRemoveGroup(tableID, add) {
+                                try {
+                                var table = document.getElementById(tableID);
+                                var rowCount = table.rows.length;
+
+                                var exists = false;
+                                var bottom = 0;
+                                var top = 0;
+                                for (var j = 0; j &lt; rowCount; j++) {
+                                var row = table.rows[j];
+                                var chekbox = row.cells[0].childNodes[0];
+                                if (chekbox.checked) {
+                                chekbox.checked = false;
+                                if (exists == false) {
+                                exists = true;
+                                top = j;
+                                /* console.log(top); */
+                                }
+                                bottom = j;
+                                }
+
+                                }
+
+                                /* for(var i=0; i&lt;rowCount; i++) { */
+                                if (exists) {
+                                var f = document.getElementsByName("front");
+                                var b = document.getElementsByName("back");
+                                var srow = table.rows[top];
+                                var sparen = row.cells[1];
+                                var topHtml = f[top];
+
+                                var srow2 = table.rows[bottom];
+                                var sparen2 = srow2.cells[1];
+                                var bottomHtml = b[bottom];
+
+                                if (add == 0) {
+                                if (topHtml.innerHTML != '') topHtml.innerHTML = topHtml.innerHTML.slice(1);
+                                if (bottomHtml.innerHTML != '') bottomHtml.innerHTML = bottomHtml.innerHTML.slice(1);
+                                } else if (add == 1) {
+                                topHtml.innerHTML += '(';
+                                bottomHtml.innerHTML += ')';
+                                }
+
+                                }
+                                } catch (e) {
+                                alert(e);
+                                }
+                                deleteConditions(tableID);
+                                updateSummary();
+                                }
+
+                                function updateSummary() {
+                                var value = "";
+                                try {
+                                var v = document.getElementsByClassName("v");
+                                if (v) {
+                                for (var j = 0; j &lt; v.length - 1; j++) {
+                                var item = v[j];
+                                if (item.tagName == "SELECT"){
+
+                                value += item.value;}
+                                else
+                                value += (item.innerHTML);
+                                value += " ";
+                                }
+                                console.log(value);
+
+                                document.getElementsByName("filter")[0].value = value;
+                                document.getElementsByName("filter")[0].innerHTML = value;
+                                const e = new Event("change");
+                                document.getElementsByName("filter")[0].dispatchEvent(e);
+
+                                document.getElementsByName("filter")[0].focus();
+
+                                }
+
+                                } catch (e) {
+                                alert(e);
+                                }
+                                }
+                                function fillAttributes() {
+                                var value = "";
+                                try {
+
+                                if (document.getElementsByName("attributes")[0].innerHTML){
+                                var v = document.getElementsByName("attributes")[0].innerHTML.split("\\\\\\");
+
+                                for (var j = 0; j &lt; v.length; j++) {
+                                var item = v[j];
+                                value += "&lt;OPTION selected=True value=\"" + item + "\"&gt;" + item + "&lt;/OPTION&gt;";
+                                }
+                                document.getElementsByName("attrs")[0].innerHTML = (value);
+                                document.getElementsByName("attrs")[0].value = (value);
+
+
+                                }
+
+                                } catch (e) {
+                                alert(e);
+                                }
+                                }
+
+                                &lt;/SCRIPT&gt;
+                                &lt;/HEAD&gt;
+
+                                &lt;BODY onload="deleteConditions('dataTable'); updateSummary()" class="r"&gt;
+
+                                &lt;INPUT type="button" value="Add Row" onclick="addRow('dataTable')" /&gt;
+
+                                &lt;INPUT type="button" value="Delete Row" onclick="deleteRow('dataTable')" /&gt;
+                                &lt;INPUT type="button" value="+ ()" onclick="addRemoveGroup('dataTable',1)" /&gt;
+                                &lt;INPUT type="button" value="- ()" onclick="addRemoveGroup('dataTable',0)" /&gt;
+                                &lt;TABLE id="dataTable"  style="table-layout: auto;" border="1"&gt;
+                                &lt;TR class="r"&gt;
+                                &lt;TD class="r"&gt;&lt;INPUT type="checkbox" name="chk" /&gt;&lt;/TD&gt;
+                                &lt;TD class="r"&gt;
+                                &lt;b name="front" class="front v r" style="
+
+                                "&gt;&lt;/b&gt;
+                                &lt;SELECT class="v r" onchange="updateSummary()" name="attrs" style="
+                                align-content: center;
+
+                                "&gt;
+
+                                &lt;/SELECT&gt;
+                                &lt;b name="back" class="back v" style="
+                                display: inline;
+                                "&gt;&lt;/b&gt;
+                                &lt;/TD&gt;
+                                &lt;TD&gt;
+                                &lt;SELECT name="condition" class="v r" onchange="updateSummary()" style="top: 10px; position: relative"&gt;
+                                &lt;OPTION class="r" value="|"&gt;OR&lt;/OPTION&gt;
+                                &lt;OPTION class="r" value="&amp;"&gt;AND&lt;/OPTION&gt;
+                                &lt;/SELECT&gt;
+                                &lt;/TD&gt;
+                                &lt;/TR&gt;
+                                &lt;/TABLE&gt;
+                                &lt;br /&gt;
+                                &lt;b&gt;Filter: &lt;/b&gt; &lt;b id="value"&gt;&lt;/b&gt;
+                                &lt;/BODY&gt;
+
+                                &lt;/HTML&gt;
+
+                                &lt;/html&gt;
+
+                            </htmlData>
+                        </xml>
+                    </xml>
+                    <field name="filter" string="Filter"/>
+                    <script>
+                        fillAttributes();
+                    </script>
+                </sheet>
+                <footer>
+                    <button name="update" class="btn btn-primary" string="Update" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="bom_line_filter_tree_view" model="ir.ui.view">
+        <field name="name">bom.line.filter.view</field>
+        <field name="model">bom.line.filter</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="bom_line_filter_search_view" model="ir.ui.view">
+        <field name="name">bom.line.filter.view</field>
+        <field name="model">bom.line.filter</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <separator/>
+                <filter string="Archived" name="archived_bom_line_filter" domain="[['active', '=', False]]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+<!--    <record id="mrp_bom_form_inherit" model="ir.ui.view">-->
+<!--        <field name="name">mrp.bom.form.inherit</field>-->
+<!--        <field name="model">mrp.bom</field>-->
+<!--        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='bom_line_ids']/tree//field[@name='product_uom_id']" position="after">-->
+<!--                <button name="action_filter" string="Filter" type="object" />-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+</odoo>

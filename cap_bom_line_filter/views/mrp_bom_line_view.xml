@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_bom_form_view_inherit" model="ir.ui.view">
+        <field name="name">mrp.bom.form.view.inherit</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <field name="bom_product_template_attribute_value_ids" position="after">
+                <field name="search_filter"/>
+                <field name="search_eval" invisible="1"/>
+                <button name="action_filter" string="Filter" type="object" />
+            </field>
+        </field>
+    </record>
+</odoo>
